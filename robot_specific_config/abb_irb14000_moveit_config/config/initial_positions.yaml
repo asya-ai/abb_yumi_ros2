@@ -1,0 +1,17 @@
+# Default initial positions for abb_irb14000's ros2_control fake system
+
+initial_positions:
+  robl_joint_1: 0
+  robl_joint_2: 0
+  robl_joint_3: 0
+  robl_joint_4: 0
+  robl_joint_5: 0
+  robl_joint_6: 0
+  robl_joint_7: 0
+  robr_joint_1: 0
+  robr_joint_2: 0
+  robr_joint_3: 0
+  robr_joint_4: 0
+  robr_joint_5: 0
+  robr_joint_6: 0
+  robr_joint_7: 0

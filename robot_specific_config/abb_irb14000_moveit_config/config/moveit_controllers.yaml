@@ -1,0 +1,26 @@
+# MoveIt uses this configuration for controller management
+
+moveit_controller_manager: moveit_simple_controller_manager/MoveItSimpleControllerManager
+
+moveit_simple_controller_manager:
+  controller_names:
+    - yumi_arms_controller
+
+  yumi_arms_controller:
+    type: FollowJointTrajectory
+    joints:
+      - robl_joint_1
+      - robl_joint_2
+      - robl_joint_3
+      - robl_joint_4
+      - robl_joint_5
+      - robl_joint_6
+      - robl_joint_7
+      - robr_joint_1
+      - robr_joint_2
+      - robr_joint_3
+      - robr_joint_4
+      - robr_joint_5
+      - robr_joint_6
+      - robr_joint_7
+    action_ns: follow_joint_trajectory
