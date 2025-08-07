@@ -1,16 +1,27 @@
-# This config file is used by ros2_control
 controller_manager:
   ros__parameters:
-    update_rate: 100  # Hz
+    update_rate: 250
 
-    yumi_arms_controller:
+    left_joint_trajectory_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
+    right_joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    left_gripper_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    right_gripper_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
-yumi_arms_controller:
+joint_state_broadcaster:
+  ros__parameters:
+    publish_rate: 100.0
+
+left_joint_trajectory_controller:
   ros__parameters:
     joints:
       - robl_joint_1
@@ -20,6 +31,18 @@ yumi_arms_controller:
       - robl_joint_5
       - robl_joint_6
       - robl_joint_7
+    command_interfaces: [position, velocity]
+    state_interfaces:   [position, velocity]
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: false
+    constraints:
+      goal_time: 0.0
+      stopped_velocity_tolerance: 0.0
+
+right_joint_trajectory_controller:
+  ros__parameters:
+    joints:
       - robr_joint_1
       - robr_joint_2
       - robr_joint_3
@@ -27,6 +50,30 @@ yumi_arms_controller:
       - robr_joint_5
       - robr_joint_6
       - robr_joint_7
+    command_interfaces: [position, velocity]
+    state_interfaces:   [position, velocity]
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: false
+    constraints:
+      goal_time: 0.0
+      stopped_velocity_tolerance: 0.0
+
+left_gripper_controller:
+  ros__parameters:
+    joints:
+      - grpl_half_aperture_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    allow_nonzero_velocity_at_trajectory_end: true
+
+right_gripper_controller:
+  ros__parameters:
+    joints:
+      - grpr_half_aperture_joint
     command_interfaces:
       - position
     state_interfaces:

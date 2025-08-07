@@ -1,6 +1,8 @@
 # Default initial positions for abb_irb14000's ros2_control fake system
 
 initial_positions:
+  grpl_half_aperture_joint: 0
+  grpr_half_aperture_joint: 0
   robl_joint_1: 0
   robl_joint_2: 0
   robl_joint_3: 0

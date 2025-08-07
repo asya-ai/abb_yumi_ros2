@@ -4,10 +4,14 @@ moveit_controller_manager: moveit_simple_controller_manager/MoveItSimpleControll
 
 moveit_simple_controller_manager:
   controller_names:
-    - yumi_arms_controller
+    - left_joint_trajectory_controller
+    - right_joint_trajectory_controller
+    - left_gripper_controller
+    - right_gripper_controller
 
-  yumi_arms_controller:
+  left_joint_trajectory_controller:
     type: FollowJointTrajectory
+    action_ns: follow_joint_trajectory
     joints:
       - robl_joint_1
       - robl_joint_2
@@ -16,6 +20,10 @@ moveit_simple_controller_manager:
       - robl_joint_5
       - robl_joint_6
       - robl_joint_7
+  right_joint_trajectory_controller:
+    type: FollowJointTrajectory
+    action_ns: follow_joint_trajectory
+    joints:
       - robr_joint_1
       - robr_joint_2
       - robr_joint_3
@@ -23,4 +31,11 @@ moveit_simple_controller_manager:
       - robr_joint_5
       - robr_joint_6
       - robr_joint_7
-    action_ns: follow_joint_trajectory
+  left_gripper_controller:
+    type: FollowJointTrajectory
+    joints:
+      - grpl_half_aperture_joint
+  right_gripper_controller:
+    type: FollowJointTrajectory
+    joints:
+      - grpr_half_aperture_joint
