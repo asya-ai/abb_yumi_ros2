@@ -98,7 +98,7 @@ CallbackReturn ABBSystemHardware::on_init(const hardware_interface::HardwareInfo
 
     // Get robot controller description from RWS
     abb::robot::RWSManager rws_manager(rws_ip, rws_port, "Default User", "robotics");
-    robot_controller_description_ = abb::robot::utilities::establishRWSConnection(rws_manager, "IRB1200", true);
+    robot_controller_description_ = abb::robot::utilities::establishRWSConnection(rws_manager, "", true);
   }
   else
   {
@@ -212,28 +212,14 @@ std::vector<hardware_interface::StateInterface> ABBSystemHardware::export_state_
   std::vector<hardware_interface::StateInterface> state_interfaces;
   for (auto& group : motion_data_.groups)
   {
-    std::string prefix;
-    if (group.name == "rob_l")
-    {
-      prefix = "robl_";
-    }
-    else if (group.name == "rob_r")
-    {
-      prefix = "robr_";
-    }
-
     for (auto& unit : group.units)
     {
       for (auto& joint : unit.joints)
       {
-        const std::size_t pos = joint.name.find("joint");
-        const std::string joint_tail = joint.name.substr(pos);
-        const std::string joint_name = prefix + joint_tail;
-
         state_interfaces.emplace_back(
-            hardware_interface::StateInterface(joint_name, hardware_interface::HW_IF_POSITION, &joint.state.position));
+            hardware_interface::StateInterface(joint.name, hardware_interface::HW_IF_POSITION, &joint.state.position));
         state_interfaces.emplace_back(
-            hardware_interface::StateInterface(joint_name, hardware_interface::HW_IF_VELOCITY, &joint.state.velocity));
+            hardware_interface::StateInterface(joint.name, hardware_interface::HW_IF_VELOCITY, &joint.state.velocity));
       }
     }
   }
@@ -245,27 +231,14 @@ std::vector<hardware_interface::CommandInterface> ABBSystemHardware::export_comm
   std::vector<hardware_interface::CommandInterface> command_interfaces;
   for (auto& group : motion_data_.groups)
   {
-    std::string prefix;
-    if (group.name == "rob_l")
-    {
-      prefix = "robl_";
-    }
-    else if (group.name == "rob_r")
-    {
-      prefix = "robr_";
-    }
     for (auto& unit : group.units)
     {
       for (auto& joint : unit.joints)
       {
-        const std::size_t pos = joint.name.find("joint");
-        const std::string joint_tail = joint.name.substr(pos);
-        const std::string joint_name = prefix + joint_tail;
-
         command_interfaces.emplace_back(hardware_interface::CommandInterface(
-            joint_name, hardware_interface::HW_IF_POSITION, &joint.command.position));
+            joint.name, hardware_interface::HW_IF_POSITION, &joint.command.position));
         command_interfaces.emplace_back(hardware_interface::CommandInterface(
-            joint_name, hardware_interface::HW_IF_VELOCITY, &joint.command.velocity));
+            joint.name, hardware_interface::HW_IF_VELOCITY, &joint.command.velocity));
       }
     }
   }
@@ -277,7 +250,7 @@ CallbackReturn ABBSystemHardware::on_activate(const rclcpp_lifecycle::State& /* 
 {
   size_t counter = 0;
   RCLCPP_INFO(LOGGER, "Connecting to robot...");
-  while (rclcpp::ok() && ++counter < NUM_CONNECTION_TRIES)
+  while (rclcpp::ok() && counter++ < NUM_CONNECTION_TRIES)
   {
     // Wait for a message on any of the configured EGM channels.
     if (egm_manager_->waitForMessage(500))
